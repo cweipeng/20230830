@@ -14,10 +14,24 @@
 
     <div id="app">
         <div class="container">
+            <div class="my-3">
+                <button type="button" class="btn btn-outline-primary" @click="status = !status">
+                    切換照片
+                </button>
+                現在照片: <span v-if="status">清晰</span>
+                 <span v-else>模糊</span>
+            </div>
             <div class="row">
                 <div v-for="item in data" class="col-md-4 mb-3">
                     <div class="card">
-                        <img :src="item.picture.large" class="card-img-top" alt="">
+                        <div class="position-absolute" style="right: 20px;top: 10px;">
+                        <button type="button" class="btn btn-outline-danger rounded-pill" @click="item.favorite=!item.favorite">
+                            <i v-if="!item.favorite" class="bi bi-heart"></i>
+                            <i v-else class="bi bi-heart-fill"></i>
+                        </button>
+                    </div>
+                    <img v-if="status" :src="item.picture.large" class="card-img-top" alt="">
+                    <img v-else :src="item.picture.thumbnail" class="card-img-top" alt="">
                         <div class="card-body">
                             <h5 class="card-title">{{ item.name.title }} {{ item.name.first }} {{ item.name.last }} 
                                 <span v-if=" item.gender === 'male'">
@@ -49,18 +63,23 @@
                                 Postcode: {{ item.location.postcode}}
                             </p>
                             <p class="card-text">
-                                Address: {{ item.location.city}} {{ item.location.state}} {{ item.location.country}} {{ item.location.postcode}}
+                                Address: <a :href=`https://www.google.com/maps/search/${item.location.state}${item.location.country}${item.location.postcode}`>
+                                    {{ item.location.city}} {{ item.location.state}} {{ item.location.country}} {{ item.location.postcode}}
+                                </a>
+                                <iframe width="100%" height="300"
+                                :src=`https://maps.google.com.tw/maps?q=${item.location.coordinates.latitude},${item.location.coordinates.longitude}&output=embed&z=10`></iframe>
                             </p>
                             <p class="card-text">
                                 description: {{ item.location.timezone.description}}
                             </p>
                             <p class="card-text">
-                                dob: {{ item.dob.date}}
+                                dob: {{ short(item.dob.date)}}
                             </p>
                             <p class="card-text">
-                                registered: {{ item.registered.date}}
+                                registered: {{ short(item.registered.date)}}
                             </p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
+                        
                         </div>
                     </div>
                 </div>
@@ -69,6 +88,7 @@
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- 拿一整包 -->
     <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
 
@@ -82,8 +102,37 @@
             data() {
                 return {
                     // text: 'AAA',
-                    data: results,
+                    data: [],
+                    status:true,
                 }
+            },
+            methods:{
+                short(date)
+                {
+                    return date.substr(0,10);
+                },
+                fetchdata()
+                {
+                    let url='http://randomuser.me/api/?results=10';
+                fetch(url)
+                .then(function(response){
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data.results);
+                    this.data=data.results;
+                })
+                },
+                getdata(){
+                    axios.get('http://randomuser.me/api/?results=10')
+                    .then((response) => {
+                    // handle success
+                    this.data=response.data.results;
+                    })
+                }
+            },
+            mounted(){
+                this.getdata();
             }
         });
 
