@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,93 +8,310 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
+
 <body>
     <div id="app">
+
         <div class="container">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="nav-item">
-                    <button class="nav-link" @click="isActive ='all', changeColor ='all'"  type="button">全部地區</button>
+                    <button class="nav-link" @click="isActive ='all'" type="button">全部地區</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" @click="isActive ='north', changeColor ='north'" 
-                        type="button">北部地區</button>
+                    <button class="nav-link" @click="isActive ='north'" type="button">北部地區</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link"  @click="isActive ='center', changeColor ='center'"
-                        type="button">中部地區</button>
+                    <button class="nav-link" @click="isActive ='center'" type="button">中部地區</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link"  @click="isActive ='south', changeColor ='south'"
-                        type="button">南部地區</button>
+                    <button class="nav-link" @click="isActive ='south'" type="button">南部地區</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link"  @click="isActive ='east', changeColor ='east'"
-                        type="button">東部地區</button>
+                    <button class="nav-link" @click="isActive ='east'" type="button">東部地區</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" @click="isActive ='out'" type="button">離島地區</button>
                 </li>
             </ul>
-            <div class="row">
-                <div v-for="item in data" class="col-md-4 mb-3">
-                    <div class="card">
-                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'" src="./img/晴天.svg" alt="" class="card-img-top">
-                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'" src="./img/多雲時晴.svg" alt="" class="card-img-top">
-                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'" src="./img/多雲時陰.svg" alt="" class="card-img-top">
-                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'" src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
-                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'" src="./img/雨天.svg" alt="">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                {{ item.locationName }}
-                            <p class="card-text">
-                                溫度: {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
-                            </p>
-                            <p class="card-text">
-                                {{item.weatherElement[0].time[1].parameter.parameterName}}
-                            </p>
-                        </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show " :class="{ active: isActive ==='all'}" tabindex="0">
+                    <div class="row">
+                        <template v-for="item in data">
+                            <div class="card col-md-4 mb-3">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" :class="{ active : isActive ==='north'}" tabindex="0">
+                    <div class="row">
+                        <template v-for="item in data">
+                            <div class="card col-md-4 mb-3"
+                                v-if="item.locationName =='新北市'||item.locationName =='新竹縣'||item.locationName =='新竹市'||item.locationName =='臺北市'||item.locationName=='宜蘭縣'||item.locationName=='桃園市'||item.locationName=='基隆市'">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" :class="{ active : isActive ==='center'}" tabindex="0">
+
+                    <div class="row">
+                        <!-- {{data}} -->
+                        <template v-for="item in data">
+
+                            <div class="card col-md-4 mb-3" v-if="item.locationName=='苗栗縣' ||item.locationName=='雲林縣' ||item.locationName=='臺中市'
+                                    ||item.locationName=='南投縣' ||item.locationName=='彰化縣'">
+                                <!-- <div class=" card"> -->
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade show " :class="{ active: isActive ==='south'}" tabindex="0">
+                    <div class="row">
+                        <template v-for="item in data">
+                            <div class="card col-md-4 mb-3"
+                                v-if="item.locationName =='嘉義縣'||item.locationName =='嘉義市'||item.locationName =='臺南市'||item.locationName =='高雄市'||item.locationName=='屏東縣'">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" :class="{ active : isActive ==='east'}" tabindex="0">
+                    <div class="row">
+                        <template v-for="item in data">
+                            <div class="card col-md-4 mb-3" v-if="item.locationName =='花蓮縣'||item.locationName =='臺東縣'">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="tab-pane fade show" :class="{ active : isActive ==='out'}" tabindex="0">
+                    <div class="row">
+                        <template v-for="item in data">
+                            <div class="card col-md-4 mb-3"
+                                v-if="item.locationName =='金門縣'||item.locationName =='澎湖縣'||item.locationName =='連江縣'">
+
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                                    src="./img/晴天.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                                    src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                                    src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                                    src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                                <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                                    src="./img/雨天.svg" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ item.locationName }}
+                                        <p class="card-text">
+                                            溫度:
+                                            {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                        </p>
+                                        <p class="card-text">
+                                            {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                        </p>
+                                </div>
+
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
+
         </div>
+
+    </div>
+    </div>
+    </div>
+
+
+    </div>
+    <!-- <div class="row">
+                <div v-for="item in data" class="col-md-4 mb-3">
+                    <div class="card">
+                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '1'||item.weatherElement[0].time[1].parameter.parameterValue === '24'"
+                            src="./img/晴天.svg" alt="" class="card-img-top">
+                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '2'||item.weatherElement[0].time[1].parameter.parameterValue === '3'||item.weatherElement[0].time[1].parameter.parameterValue === '25'||item.weatherElement[0].time[1].parameter.parameterValue === '26'"
+                            src="./img/多雲時晴.svg" alt="" class="card-img-top">
+                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '4'||item.weatherElement[0].time[1].parameter.parameterValue === '5'||item.weatherElement[0].time[1].parameter.parameterValue === '6'||item.weatherElement[0].time[1].parameter.parameterValue === '7'||item.weatherElement[0].time[1].parameter.parameterValue === '23'"
+                            src="./img/多雲時陰.svg" alt="" class="card-img-top">
+                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '15'||item.weatherElement[0].time[1].parameter.parameterValue === '16'||item.weatherElement[0].time[1].parameter.parameterValue === '17'||item.weatherElement[0].time[1].parameter.parameterValue === '18'||item.weatherElement[0].time[1].parameter.parameterValue === '22'||item.weatherElement[0].time[1].parameter.parameterValue === '33'||item.weatherElement[0].time[1].parameter.parameterValue === '34'||item.weatherElement[0].time[1].parameter.parameterValue === '35'||item.weatherElement[0].time[1].parameter.parameterValue === '36'||item.weatherElement[0].time[1].parameter.parameterValue === '41'||item.weatherElement[0].time[1].parameter.parameterValue === '42'"
+                            src="./img/陰有陣雨或雷雨.svg" alt="" class="card-img-top">
+                        <img v-if="item.weatherElement[0].time[1].parameter.parameterValue === '8'||item.weatherElement[0].time[1].parameter.parameterValue === '9'||item.weatherElement[0].time[1].parameter.parameterValue === '10'||item.weatherElement[0].time[1].parameter.parameterValue === '11'||item.weatherElement[0].time[1].parameter.parameterValue === '12'||item.weatherElement[0].time[1].parameter.parameterValue === '13'||item.weatherElement[0].time[1].parameter.parameterValue === '14'||item.weatherElement[0].time[1].parameter.parameterValue === '19'||item.weatherElement[0].time[1].parameter.parameterValue === '20'||item.weatherElement[0].time[1].parameter.parameterValue === '29'||item.weatherElement[0].time[1].parameter.parameterValue === '30'||item.weatherElement[0].time[1].parameter.parameterValue === '31'||item.weatherElement[0].time[1].parameter.parameterValue === '32'||item.weatherElement[0].time[1].parameter.parameterValue === '37'||item.weatherElement[0].time[1].parameter.parameterValue === '38'||item.weatherElement[0].time[1].parameter.parameterValue === '39'"
+                            src="./img/雨天.svg" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ item.locationName }}
+                                <p class="card-text">
+                                    溫度:
+                                    {{item.weatherElement[2].time[1].parameter.parameterName}}°C-{{item.weatherElement[4].time[1].parameter.parameterName}}°C
+                                </p>
+                                <p class="card-text">
+                                    {{item.weatherElement[0].time[1].parameter.parameterName}}
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-         const app = Vue.createApp({
+        const app = Vue.createApp({
             data() {
                 return {
-                    // text: 'AAA',
+                    // cityAll: [
+                    //     ['基隆市', '新北市', '臺北市', '桃園市', '新竹市', '新竹縣', '苗栗縣', '臺中市', '南投縣', '彰化縣', '雲林縣', '嘉義市', '嘉義縣', '臺南市', '高雄市', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣'],
+                    //     ['基隆市', '新北市', '臺北市', '桃園市', '新竹市', '新竹縣', '宜蘭縣'],
+                    //     ['臺中市', '南投縣', '彰化縣', '雲林縣', '苗栗縣'],
+                    //     ['臺南市', '高雄市', '屏東縣', '嘉義市', '嘉義縣',],
+                    //     ['花蓮縣', '臺東縣'],
+                    //     ['澎湖縣', '金門縣', '連江縣'],
+                    // ],
+                    // nowCityAll: [],
                     data: [],
-                    status:true,
+                    isActive: 'all',
                 }
             },
-            methods:{
-                fetchdata()
-                {
-                    let url='https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-B39A92CF-DFE0-4333-9FC9-046415AFEE85';
-                fetch(url)
-                .then(function(response){
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    this.data=data;
-                })
+            methods: {
+                fetchdata() {
+                    let url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-B39A92CF-DFE0-4333-9FC9-046415AFEE85';
+                    fetch(url)
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then((data) => {
+                            console.log(data);
+                            this.data = data;
+                        })
                 },
-                getdata(){
+                getdata() {
                     axios.get('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-B39A92CF-DFE0-4333-9FC9-046415AFEE85')
-                    .then((response) => {
-                    // handle success
-                    this.data=response.data.records.location;
-                    })
-                }
+                        .then((response) => {
+                            // handle success
+                            this.data = response.data.records.location;
+                        })
+                },
+                // changeArea(index) {
+                //     this.nowCityAll = this.cityAll[index];
+                //     console.log(this.nowCityAll);
+                // }
             },
-            mounted(){
+            mounted() {
                 this.getdata();
-                
+                // this.nowCityAll = this.cityAll[0];
             }
         });
 
         app.mount('#app');
     </script>
 </body>
+
 </html>
